@@ -1,16 +1,51 @@
 ---
 import '../styles/global.css'
+import Layout from "../layouts/Layout.astro";
+
+const offres = [
+    {
+        "adresse": "2821 Lake Sevilla, Palm Harbor, TX",
+        "favori": true,
+        "id": "64l3n8nar836i5j",
+        "nbChambres": 4,
+        "nbSdb": 2,
+        "nomMaison": "Beverly Springfield",
+        "prix": 2700,
+        "surface": 45,
+        "imgUrl": "image1.png"
+    },
+    {
+        "adresse": "2699 Green Valley, Highland Lake",
+        "favori": true,
+        "id": "lo831zeg10hpm9y",
+        "nbChambres": 4,
+        "nbSdb": 2,
+        "nomMaison": "Palm Harbor",
+        "prix": 2095,
+        "surface": 42,
+        "imgUrl": "image2.png"
+    },
+    {
+        "adresse": "909 Woodland St, Michigan, IN",
+        "favori": false,
+        "id": "s1zuhj19x8eb242",
+        "nbChambres": 4,
+        "nbSdb": 3,
+        "nomMaison": "Faulkner Ave",
+        "prix": 4550,
+        "surface": 80,
+        "imgUrl": "image3.png"
+    }
+]
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>Offres</title>
-	</head>
-	<body>
-		<h1>Offres</h1>
-	</body>
-</html> 
+<Layout title="Offres">
+    <h1>Offres disponibles</h1>
+  <div>
+    <ul> 
+      {offres.map((offre) => 
+        <li>{offre.nomMaison}</li>
+      )}
+    </ul>
+  </div>
+</Layout>
