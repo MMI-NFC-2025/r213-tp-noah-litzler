@@ -1,0 +1,22 @@
+---
+import { getImageUrl } from '../js/backend.mjs';
+import { Image } from "astro:assets";
+
+const {
+  record,
+  recordImage, 
+  width = 400,
+  height = 300,
+} = Astro.props;
+
+const imageURL = await getImageUrl(record, recordImage);
+---
+
+{imageURL && 
+    <Image
+        src={imageURL}
+        alt={record.nom_maison || 'images'}
+        width={width}
+        height={height}
+    />
+}
