@@ -4,7 +4,7 @@ import { Image } from "astro:assets";
 
 const {
   record,
-  recordImage, 
+  recordImage,
   width = 400,
   height = 300,
 } = Astro.props;
@@ -12,11 +12,28 @@ const {
 const imageURL = await getImageUrl(record, recordImage);
 ---
 
-{imageURL && 
-    <Image
-        src={imageURL}
-        alt={record.nom_maison || 'images'}
-        width={width}
-        height={height}
-    />
-}
+<div class="pb-image-container">
+  {imageURL && 
+      <Image
+          src={imageURL}
+          alt={record.nom_maison || 'Image maison'}
+          width={width}
+          height={height}
+      />
+  }
+</div>
+
+<style>
+  .pb-image-container {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .pb-image-container :global(img) {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+</style>
