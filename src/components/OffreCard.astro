@@ -15,6 +15,7 @@ import PbImage from './PbImage.astro';
 
   <div class="p-4 space-y-2">
     <h2 class="text-lg font-semibold">{offre.nom_maison}</h2>
+    <a href={`/offres/${offre.id}`}>Voir plus</a>
 
     <p class="text-sm text-gray-600">
       {offre.surface} m² • {offre.nb_chambre} ch • {offre.nb_salledebain} sdb
