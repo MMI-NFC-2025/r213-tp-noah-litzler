@@ -1,32 +1,18 @@
 ---
+import PbImage from "./PbImage.astro";
 const { offre } = Astro.props;
-import PbImage from './PbImage.astro';
 ---
 
 <div class="group relative overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+<div class="h-64 bg-slate-200 flex items-center justify-center overflow-hidden">
+  <PbImage record={offre} recordImage={offre.images?.[0]} width={900} height={600} />
+</div>
+<a href={`/agenda/${offre.id}`}>Plus d'info</a>
+<a class="underline" href={`/offres/${offre.id}`}>Voir plus</a>
 
-  {
-    offre.favori && (
-      <span class="absolute right-3 top-3 rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white"> ❤️ Favori</span>)}
-
-  <div class="h-40 bg-slate-200 flex items-center justify-center text-slate-400">
-    <PbImage record={offre} recordImage={offre.images[0]} />
-  </div>
 
   <div class="p-4 space-y-2">
-    <h2 class="text-lg font-semibold">{offre.nom_maison}</h2>
-    <a href={`/offres/${offre.id}`}>Voir plus</a>
-
-    <p class="text-sm text-gray-600">
-      {offre.surface} m² • {offre.nb_chambre} ch • {offre.nb_salledebain} sdb
-    </p>
-
-    <p class="text-sm text-gray-500">
-      {offre.adresse}
-    </p>
-
-    <p class="pt-2 text-lg font-bold text-slate-800">
-      {offre.prix_maison} € / mois
-    </p>
+    <h2 class="text-lg font-semibold">{offre.nomMaison}</h2>
   </div>
 </div>
+Layout
