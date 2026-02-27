@@ -1,0 +1,101 @@
+---
+export const prerender = false;
+
+import Layout from "../../layouts/Layout.astro";
+import { addOffre } from "../../js/backend.mjs";
+
+let message = "";
+
+if (Astro.request.method === "POST") {
+  const contentType = Astro.request.headers.get("content-type") ?? "";
+
+  if (
+    !contentType.includes("application/x-www-form-urlencoded") &&
+    !contentType.includes("multipart/form-data")
+  ) {
+    throw new Error("mauvais content-type pour formData()");
+  }
+
+  const form = await Astro.request.formData();
+
+  const house = {
+    nom_maison: form.get("nom_maison"),
+    prix_maison: parseInt(form.get("prix_maison")),
+    nb_salledebain: parseInt(form.get("nb_salledebain")),
+    nb_chambre: parseInt(form.get("nb_chambre")),
+    surface: parseInt(form.get("surface")),
+    adresse: form.get("adresse"),
+  };
+
+  const response = await addOffre(house);
+  message = response.message;
+}
+---
+
+<Layout titre="Ajouter une offre">
+  <h1 class="text-lg font-bold">Ajouter une offre</h1>
+
+  {message && <p class="mt-3 text-red-600">{message}</p>}
+
+  <form action="/offres/add" method="POST" class="mt-4 space-y-3">
+    <input
+      type="text"
+      name="nom_maison"
+      placeholder="Nom de la maison"
+      required
+      class="w-full p-2 border border-gray-300 rounded-md"
+    />
+
+    <input
+      type="number"
+      name="prix_maison"
+      placeholder="Prix"
+      min="0"
+      class="w-full p-2 border border-gray-300 rounded-md"
+    />
+
+    <input
+      type="number"
+      name="nb_salledebain"
+      placeholder="Nombre de salles de bain"
+      min="0"
+      class="w-full p-2 border border-gray-300 rounded-md"
+    />
+
+    <input
+      type="number"
+      name="nb_chambre"
+      placeholder="Nombre de chambres"
+      min="0"
+      class="w-full p-2 border border-gray-300 rounded-md"
+    />
+
+    <input
+      type="number"
+      name="surface"
+      placeholder="Superficie"
+      min="0"
+      class="w-full p-2 border border-gray-300 rounded-md"
+    />
+
+    <input
+      type="text"
+      name="adresse"
+      placeholder="Adresse"
+      class="w-full p-2 border border-gray-300 rounded-md"
+    />
+
+    <input
+        type="file"
+        name="images"
+        class="w-full p-2 border border-gray-300 rounded-md"
+
+    />
+
+    <button type="submit" class="bg-slate-600 text-white px-4 py-2 rounded-md">
+      Ajouter
+    </button>
+  </form>
+</Layout>
+ 
+ 

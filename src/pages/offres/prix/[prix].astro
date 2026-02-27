@@ -3,7 +3,7 @@ export const prerender = false;
 
 import Layout from "../../../layouts/Layout.astro";
 import OffreCard from "../../../components/OffreCard.astro";
-import { getOffres } from "../../../backend.mjs";
+import { getOffres } from "../../../js/backend.mjs";
 
 const { prix } = Astro.params;
 const prixMax = Number(prix);
@@ -13,7 +13,7 @@ if (Number.isNaN(prixMax)) {
 }
 
 const offres = await getOffres();
-const offresFiltrees = offres.filter((o) => Number(o.prix) < prixMax);
+const offresFiltrees = offres.filter((o) => Number(o.prix_maison) < prixMax);
 ---
 
 <Layout titre={Offres < ${prixMax} €}>
