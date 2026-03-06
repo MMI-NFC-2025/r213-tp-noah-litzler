@@ -58,3 +58,38 @@ export async function filterByPrix(minPrix, maxPrix) {
   }
 }
  
+export async function setFavori(house) {
+  await pb.collection('maison').update(house.id, { favori: !house.favori });
+}
+
+export async function getAgents() {
+  try {
+    const data = await pb.collection("agent").getFullList();
+    return data;
+  } catch (error) {
+    console.log("Une erreur est survenue en récupérant les agents", error);
+    return [];
+  }
+}
+
+export async function getOffresByAgent(id) {
+  try {
+    const data = await pb.collection("maison").getFullList({
+      filter: `agent_maison = "${id}"`,
+    });
+    return data;
+  } catch (error) {
+    console.log("Une erreur est survenue en récupérant les offres de l'agent", error);
+    return [];
+  }
+}
+
+export async function getAgent(id) {
+  try {
+    const agent = await pb.collection("agent").getOne(id);
+    return agent;
+  } catch (error) {
+    console.log("Une erreur est survenue en récupérant l'agent", error);
+    return null;
+  }
+}

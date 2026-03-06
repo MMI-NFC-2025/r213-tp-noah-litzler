@@ -1,0 +1,42 @@
+---
+export const prerender = false;
+
+import { getAgent, getOffresByAgent } from "../../js/backend.mjs";
+import Layout from "../../layouts/Layout.astro";
+
+const { id } = Astro.params;
+const agent = await getAgent(id);
+const offres = await getOffresByAgent(id); // Récupère les offres de l'agent
+
+if (!agent) {
+  return Astro.redirect("/agents"); // Redirige si l'agent n'existe pas
+}
+---
+
+<Layout titre={`${agent.prenom} ${agent.nom}`}>
+  <h1 class="text-2xl font-bold">{agent.prenom} {agent.nom}</h1>
+
+  <div class="mt-2 space-y-1 text-gray-600">
+    <p>Email : {agent.email}</p>
+  </div>
+
+  <h2 class="text-xl font-semibold mt-6">Offres de cet agent</h2>
+
+  <div class="mt-4">
+    {offres.length > 0 ? (
+      <ul class="space-y-1">
+        {offres.map((offre) => (
+          <li>
+            <a href={`/offres/${offre.id}`} class="underline text-blue-600">
+              {offre.nom_maison} - {offre.prix_maison} €
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>Aucune offre pour cet agent.</p>
+    )}
+  </div>
+
+  <a class="underline inline-block mt-6" href="/agents">← Retour aux agents</a>
+</Layout>

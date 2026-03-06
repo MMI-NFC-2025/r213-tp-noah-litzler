@@ -4,7 +4,7 @@ const { offre } = Astro.props;
 ---
 
 <div class="group relative overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-<div class="h-64 bg-slate-200 flex items-center justify-center overflow-hidden">
+<div class="overflow-hidden">
   <PbImage record={offre} recordImage={offre.images?.[0]} width={900} height={600} />
 </div>
 <a href={`/agenda/${offre.id}`}>Plus d'info</a>
@@ -12,6 +12,32 @@ const { offre } = Astro.props;
 
 
   <div class="p-4 space-y-2">
-    <h2 class="text-lg font-semibold">{offre.nomMaison}</h2>
+    <h2 class="text-lg font-semibold">{offre.nom_maison}</h2>
   </div>
+
+  <button class="favoriteButton absolute bottom-0 right-0 p-2 text-white rounded-tl-lg" data-offre={JSON.stringify(offre)}>
+    <img id="favorite-icon" src={offre.favori ? "/favorite_filled.png" : "/favorite.png"} alt="Favorite Icon" class="w-10 h-10" />
+  </button>
 </div>
+
+<script>
+  //@ts-nocheck
+  import { setFavori } from "../js/backend.mjs";
+  const favoriteButtons = document.querySelectorAll(".favoriteButton");
+
+  favoriteButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const offreData = JSON.parse(button.dataset.offre || '{}');
+      const newFavori = !offreData.favori;
+
+      setFavori(offreData);
+
+      const favIcon = button.querySelector('#favorite-icon');
+      if (favIcon) {
+        favIcon.src = newFavori ? "/favorite_filled.png" : "/favorite.png";
+      }
+      offreData.favori = newFavori;
+      button.dataset.offre = JSON.stringify(offreData);
+    });
+  });
+</script>

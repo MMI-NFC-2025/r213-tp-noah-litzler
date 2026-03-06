@@ -5,14 +5,35 @@ export const prerender = false;
 
 const { id } = Astro.params;
 const offre = await getOffre(id);
+
+if (!offre) {
+  return Astro.redirect('/offres');
+}
 ---
 
-<Layout titre={offre.nomMaison}>
-    <h2>{offre.nomMaison}</h2>
-    <ul>
-        <li>{offre.adresse}</li>
-        <li>{offre.surface} m²</li>
-        <li>{offre.prix_maison} €</li>
-        <li>{offre.description}</li>
-    </ul>
+<Layout titre={offre.nom_maison}>
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-900">{offre.nom_maison}</h1>
+    <p class="mt-1 text-2xl font-semibold text-blue-600">{offre.prix_maison} €</p>
+
+    <div class="mt-6 grid grid-cols-2 gap-4">
+      <div class="bg-gray-50 rounded-xl p-4">
+        <div class="text-xs text-gray-400 uppercase tracking-wide">Surface</div>
+        <div class="mt-1 text-lg font-medium">{offre.surface} m²</div>
+      </div>
+      <div class="bg-gray-50 rounded-xl p-4">
+        <div class="text-xs text-gray-400 uppercase tracking-wide">Adresse</div>
+        <div class="mt-1 text-lg font-medium">{offre.adresse}</div>
+      </div>
+    </div>
+
+    {offre.description && (
+      <div class="mt-6">
+        <h2 class="text-lg font-semibold text-gray-800">Description</h2>
+        <p class="mt-2 text-gray-600 leading-relaxed">{offre.description}</p>
+      </div>
+    )}
+
+    <a class="underline inline-block mt-8 text-gray-500 hover:text-gray-800" href="/offres">← Retour aux offres</a>
+  </div>
 </Layout>

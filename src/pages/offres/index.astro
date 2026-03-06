@@ -13,10 +13,9 @@ if (
   Astro.request.headers.get("content-type")?.includes("application/x-www-form-urlencoded")
 ) {
   const data = await Astro.request.formData();
-
   const minPrix = parseInt(data.get("minPrix"));
   const maxPrix = parseInt(data.get("maxPrix"));
-if (
+  if (
     !Number.isNaN(minPrix) &&
     !Number.isNaN(maxPrix) &&
     minPrix > 0 &&
@@ -24,7 +23,6 @@ if (
     maxPrix > minPrix
   ) {
     offres = await filterByPrix(minPrix, maxPrix);
-
     if (offres.length === 0) {
       message = `Pas d'offres entre ${minPrix}€ et ${maxPrix}€`;
     } else {
@@ -40,28 +38,40 @@ if (
 ---
 
 <Layout titre="Offres">
-  <h1 class="text-2xl font-bold">Offres</h1>
-  {message && <p class="mt-2 text-red-600">{message}</p>}
+  <h1 class="text-2xl font-bold text-gray-900">Nos offres</h1>
+  <p class="mt-1 text-gray-500">Découvrez nos biens disponibles à la vente.</p>
 
-  <p class="mt-2 text-gray-600">Voici quelques offres.</p>
+  <div class="mt-6 bg-gray-50 border rounded-xl p-4 space-y-3">
+    <p class="text-sm font-medium text-gray-700">Filtrer par prix</p>
+    <form action="/offres" method="POST" class="flex flex-wrap gap-2 items-end">
+      <input type="number" name="minPrix" placeholder="Prix min (€)" min="0" class="border p-2 rounded-lg text-sm w-36" />
+      <input type="number" name="maxPrix" placeholder="Prix max (€)" min="0" class="border p-2 rounded-lg text-sm w-36" />
+      <input type="submit" value="Filtrer" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm cursor-pointer hover:bg-blue-700 transition" />
+    </form>
 
-  <form action="/offres" method="POST" class="mt-4 space-y-2">
-    <input type="number" name="minPrix" placeholder="Prix minimum" min="0" class="border p-2 rounded" />
-    <input type="number" name="maxPrix" placeholder="Prix maximum" min="0" class="border p-2 rounded" />
-    <input type="submit" value="Filtrer par prix" class="bg-slate-600 text-white px-4 py-2 rounded cursor-pointer" />
-  </form>
-<a class="underline inline-block mt-3" href="/offres/surface/80">
-    Voir les maisons de plus de 80 m²
-  </a>
+    <div class="flex flex-wrap gap-2 pt-1">
+      <a href="/offres/surface/80" class="inline-block bg-white border border-gray-200 text-gray-600 text-sm px-3 py-1.5 rounded-full hover:border-blue-400 hover:text-blue-600 transition">
+        + de 80 m²
+      </a>
+      <a href="/offres/prix/300000" class="inline-block bg-white border border-gray-200 text-gray-600 text-sm px-3 py-1.5 rounded-full hover:border-blue-400 hover:text-blue-600 transition">
+        - de 300 000 €
+      </a>
+    </div>
+  </div>
 
-  <button
-    id="favori-button"
-    class="mt-4 bg-slate-600 rounded-lg text-white p-2"
-  >
-    Afficher les favoris
-  </button>
+  {message && <p class="mt-3 text-sm text-gray-600 bg-blue-50 border border-blue-100 rounded-lg px-4 py-2">{message}</p>}
 
-  <div class="mt-6 space-y-4">
+  <div class="mt-4 flex items-center justify-between">
+    <p class="text-sm text-gray-500">{offres.length} bien{offres.length > 1 ? 's' : ''} trouvé{offres.length > 1 ? 's' : ''}</p>
+    <button
+      id="favori-button"
+      class="text-sm border border-gray-200 rounded-full px-4 py-1.5 text-gray-600 hover:border-blue-400 hover:text-blue-600 transition"
+    >
+      Afficher les favoris
+    </button>
+  </div>
+
+  <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
     {
       offres.map((offre) => (
         <div class="offre" data-favori={offre.favori?.toString() ?? "false"}>

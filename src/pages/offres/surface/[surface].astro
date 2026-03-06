@@ -23,7 +23,7 @@ const offresFiltrees = offres.filter((o) => Number(o.surface) > surfaceMin);
     Résultats : {offresFiltrees.length}
   </p>
 
-  <div class="mt-6 space-y-4">
+  <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
     {offresFiltrees.map((offre) => <OffreCard offre={offre} />)}
   </div>
 
